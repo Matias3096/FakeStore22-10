@@ -70,6 +70,7 @@ window.goToProductDetails = (id) => {
 };
 
 // index.js
+// index.js
 async function init() {
   UI.status.textContent = 'Cargando productos...';
   totalProducts = StorageService.getProducts() || []; // ← asegura array
