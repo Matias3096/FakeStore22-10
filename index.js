@@ -2,12 +2,13 @@
 class ApiService{
     static BASE = 'https://dummyjson.com';
 
-    static async getAll(){
-        const res = await fetch (`${ApiService.BASE}/products`);
-        if (!res.ok) throw new Error (`Error HTTP: ${res.status}`);
-        return await res.json();
-        return DataTransfer.products;
-    }
+    static async getAll() {
+    const proxy = 'https://corsproxy.io/?';
+    const url = `${proxy}${encodeURIComponent(`${ApiService.BASE}/products`)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
+    return await res.json();
+}
 }
 
 class StorageService {
