@@ -2,13 +2,12 @@
 class ApiService{
     static BASE = 'https://dummyjson.com';
 
-    static async getAll() {
-    const proxy = 'https://corsproxy.io/?';
-    const url = `${proxy}${encodeURIComponent(`${ApiService.BASE}/products`)}`;
-    const res = await fetch(url);
+  static async getAll() {
+    const res = await fetch(`${ApiService.BASE}/products`);
     if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-    return await res.json();
-}
+    const data = await res.json();
+    return data.products; // 👈 dummyjson devuelve los productos dentro de "products"
+  }
 }
 
 class StorageService {
