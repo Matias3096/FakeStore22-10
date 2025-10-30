@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda FakeStore - TP Avanzado</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+
+        <h1>🛍️ Tienda FakeStore 🛍️</h1>
+            <input type="search" id="searchInput" placeholder="Buscar producto....">
+            <select  id="sortSelect">
+                <option value="none">Ordenar por...</option>
+                <option value="Precio-Ascendente">Precio ↑ Mayor precio primero</option>
+                <option value="Precio-Descendente">Precio ↓ Menor precio primero</option>
+            </select>         
+    </header>
+
+    <main>
+        <section id="cardContainer" class="grid"></section>
+        <p id="status"></p>
+    </main>
+    <script type="module" src="index.js"></script>
+</body>
+</html>
