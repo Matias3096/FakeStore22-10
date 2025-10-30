@@ -1,15 +1,15 @@
-//import { StorageService} from './index.js';  // Si se esta usando modulos reales, sino duplica la clase
+// product-details.js
+const container = document.querySelector('#productDetail'); // ← ID corrección abajo
 
-
-const container = document.querySelector('#productDetail');
-let product = JSON.parse(localStorage.getItem('selectedProduct'));
 async function loadProduct() {
+  let product = JSON.parse(localStorage.getItem('selectedProduct'));
+
   if (!product) {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     if (id) {
       try {
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const res = await fetch(`https://fakestoreapi.com/products/${id}`); // ← espacio borrado
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         product = await res.json();
       } catch (error) {
@@ -40,6 +40,4 @@ async function loadProduct() {
   `;
 }
 
-// Ejecutamos al cargar la página
-document.addEventListener('DOMContentLoaded', loadProduct);
-StorageService.saveSelected(selected);
+document.addEventListener('DOMContentLoaded', loadProduct); // ← fuera de la función

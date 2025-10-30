@@ -69,22 +69,22 @@ window.goToProductDetails = (id) => {
     window.location.href = `product-details.html?id=${id}`;
 };
 
+// index.js
 async function init() {
-    UI.status.textContent = 'Cargando productos...';
-    totalProducts = StorageService.getProducts();
+  UI.status.textContent = 'Cargando productos...';
+  totalProducts = StorageService.getProducts() || []; // ← asegura array
 
-    if (totalProducts.length === 0) {
-        try {
-            totalProducts = await await ApiService.getAll();
-            StorageService.saveProducts(totalProducts);
-        } catch (err) {
-            UI.status.textContent = 'Error al cargar productos';
-            console.error(err);
-            return;
-        }
+  if (totalProducts.length === 0) {
+    try {
+      totalProducts = await ApiService.getAll(); // ← await único
+      StorageService.saveProducts(totalProducts);
+    } catch (err) {
+      UI.status.textContent = 'Error al cargar productos';
+      console.error(err);
+      return;
     }
-
-    UI.render(totalProducts);
+  }
+  UI.render(totalProducts);
 }
 
 function filterAndSort() {
