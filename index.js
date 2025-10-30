@@ -1,11 +1,12 @@
 //Index.js
 class ApiService{
-    static BASE = 'https://fakestoreapi.com';
+    static BASE = 'https://dummyjson.com';
 
     static async getAll(){
         const res = await fetch (`${ApiService.BASE}/products`);
         if (!res.ok) throw new Error (`Error HTTP: ${res.status}`);
         return await res.json();
+        return DataTransfer.products;
     }
 }
 

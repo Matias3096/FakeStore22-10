@@ -1,35 +1,45 @@
 //import { StorageService} from './index.js';  // Si se esta usando modulos reales, sino duplica la clase
 
-const container = document.querySelector('#productDetail');
-const product = JSON.parse(localStorage.getItem('selectedProduct'));
 
-if (!product) {
-    container.innerHTML = `<p class="empty">No hay producto seleccionado. 
-    <a href="index.html">Volver a la tienda</a></p>`;
-} else {
-    container.innerHTML = `
+const container = document.querySelector('#productDetail');
+let product = JSON.parse(localStorage.getItem('selectedProduct'));
+async function loadProduct() {
+  if (!product) {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) {
+      try {
+        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        product = await res.json();
+      } catch (error) {
+        console.error('Error cargando producto:', error);
+        container.innerHTML = `<p class="empty">Error al cargar el producto. <a href="index.html">Volver</a></p>`;
+        return;
+      }
+    }
+  }
+
+  if (!product) {
+    container.innerHTML = `<p class="empty">No hay producto seleccionado. <a href="index.html">Volver</a></p>`;
+    return;
+  }
+
+  container.innerHTML = `
     <article class="card-detail">
-     <img src="${product.image}" alt ="${product.title}">
-     <div class="detail-info">
-     <h2>${product.title}</h2>
-     <p class="price">$${product.price.toFixed(2)}</p>
-     <p class="rating"> ⭐ 4 ${product.rating?.rate ?? 'N/A'} (${product.rating?.count ?? 0} reseñas)</p>
-     <p class="description">${product.description}</p>
-     <button class="back-btn" onclick="window.location.href='index.html'"> ⬅️ Volver</button>    
-    </div>
+      <img src="${product.image}" alt="${product.title}">
+      <div class="detail-info">
+        <h2>${product.title}</h2>
+        <p class="price">$${product.price.toFixed(2)}</p>
+        <p class="category">Categoría: <strong>${product.category}</strong></p>
+        <p class="rating">⭐ ${product.rating?.rate ?? 'N/A'} (${product.rating?.count ?? 0} reseñas)</p>
+        <p class="description">${product.description}</p>
+        <button class="back-btn" onclick="window.location.href='index.html'">⬅️ Volver</button>
+      </div>
     </article>
   `;
 }
 
-/* En clase
-const productDetailsElem = document.querySelector('#productDetails');
-const selectedProduct = JSON.parse(window.localStorage.getItem('selectedProduct'));
-productDetailsElem.textContent = JSON.stringify(selectedProduct, null,2);
-
-<h2>${product.title}</h2>
-      <p><strong>Precio:</strong> $${product.price.toFixed(2)}</p>
-      <p><strong>Categoría:</strong> ${product.category}</p>
-      <p><strong>Rating:</strong> ${product.rating.rate} ⭐ (${product.rating.count} reseñas)</p>
-      <p>${product.description}</p>
-
-*/
+// Ejecutamos al cargar la página
+document.addEventListener('DOMContentLoaded', loadProduct);
+StorageService.saveSelected(selected);
